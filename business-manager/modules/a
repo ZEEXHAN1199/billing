@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Manager Pro</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo">Business Manager</div>
+            <nav>
+                <ul class="nav-menu">
+                    <li class="active" data-module="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</li>
+                    <li data-module="accounting"><i class="fas fa-book"></i> Accounting</li>
+                    <li data-module="inventory"><i class="fas fa-boxes"></i> Inventory</li>
+                    <li data-module="invoicing"><i class="fas fa-receipt"></i> Invoicing</li>
+                    <li data-module="reports"><i class="fas fa-chart-bar"></i> Reports</li>
+                    <li data-module="backup"><i class="fas fa-cloud-upload-alt"></i> Backup</li>
+                    <li data-module="logs"><i class="fas fa-clipboard-list"></i> Audit Logs</li>
+                    <li data-module="settings"><i class="fas fa-cog"></i> Settings</li>
+                </ul>
+            </nav>
+            <div class="system-status">
+                <div class="status-indicator online"></div>
+                <span>Online Mode</span>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="search-box">
+                    <input type="text" placeholder="Search transactions, items...">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div class="user-actions">
+                    <button class="btn sync-btn" id="syncNow"><i class="fas fa-sync-alt"></i> Sync</button>
+                    <button class="btn backup-btn" id="backupNow"><i class="fas fa-save"></i> Backup</button>
+                    <div class="user-profile">
+                        <img src="assets/icons/user.png" alt="User">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Module Content Will Be Loaded Here -->
+            <div class="module-container" id="moduleContainer">
+                <!-- Default dashboard view will be loaded here -->
+            </div>
+        </main>
+
+        <!-- Quick Action Buttons (Floating) -->
+        <div class="quick-actions">
+            <button class="quick-btn" id="newInvoice"><i class="fas fa-plus"></i> New Invoice</button>
+            <button class="quick-btn" id="newPayment"><i class="fas fa-rupee-sign"></i> Receive Payment</button>
+            <button class="quick-btn" id="newItem"><i class="fas fa-box"></i> Add Item</button>
+        </div>
+    </div>
+
+    <!-- All JavaScript Files -->
+    <script src="script.js"></script>
+    <script src="modules/accounting.js"></script>
+    <script src="modules/inventory.js"></script>
+    <script src="modules/invoicing.js"></script>
+    <script src="modules/reporting.js"></script>
+    <script src="modules/backup.js"></script>
+    <script src="modules/logs.js"></script>
+    <script src="modules/sync.js"></script>
+    <script src="modules/ai.js"></script>
+    
+    <!-- Chart.js for reporting -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+</html>
