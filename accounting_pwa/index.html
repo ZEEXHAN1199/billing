@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Offline Accounting App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="manifest.json">
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js');
+      });
+    }
+  </script>
+  <style>
+    body { font-family: sans-serif; margin: 0; padding: 0; }
+    nav { display: flex; background: #333; color: #fff; }
+    nav button { flex: 1; padding: 10px; background: #333; color: #fff; border: none; }
+    section { display: none; padding: 10px; }
+    section.active { display: block; }
+  </style>
+</head>
+<body>
+  <nav>
+    <button onclick="showTab('customers')">Customers</button>
+    <button onclick="showTab('ledger')">Ledger</button>
+    <button onclick="showTab('invoices')">Invoices</button>
+    <button onclick="showTab('admin')">Admin</button>
+  </nav>
+
+  <section id="customers" class="active">
+    <h2>Customers</h2>
+    <input id="custName" placeholder="Customer Name">
+    <button onclick="addCustomer()">Add</button>
+    <ul id="customerList"></ul>
+  </section>
+
+  <section id="ledger">
+    <h2>Ledger</h2>
+    <div id="ledgerEntries"></div>
+  </section>
+
+  <section id="invoices">
+    <h2>Invoices</h2>
+    <button onclick="generateInvoice()">Generate Invoice</button>
+    <pre id="invoiceOutput"></pre>
+  </section>
+
+  <section id="admin">
+    <h2>Admin (PIN Protected)</h2>
+    <input id="adminPin" placeholder="Enter DDMM PIN">
+    <button onclick="unlockAdmin()">Unlock</button>
+    <div id="adminPanel" style="display:none;">
+      <p>Admin dashboard</p>
+    </div>
+  </section>
+
+  <script>
+    const dbName = "BizAppDB";
+    let db;
+    const request = indexedDB.open(dbName, 1);
+    request.onupgradeneeded = e => {
+      db = e.target.result;
+      db.createObjectStore("customers", { keyPath: "id", autoIncrement: true });
+    };
+    request.onsuccess = e => {
+      db = e.target.result;
+      loadCustomers();
+    };
+
+    function showTab(id) {
+      document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    function addCustomer() {
+      const name = document.getElementById('custName').value;
+      const tx = db.transaction("customers", "readwrite");
+      tx.objectStore("customers").add({ name });
+      tx.oncomplete = () => {
+        document.getElementById('custName').value = '';
+        loadCustomers();
+      };
+    }
+
+    function loadCustomers() {
+      const tx = db.transaction("customers", "readonly");
+      const store = tx.objectStore("customers");
+      const req = store.getAll();
+      req.onsuccess = () => {
+        const list = document.getElementById('customerList');
+        list.innerHTML = '';
+        req.result.forEach(c => {
+          const li = document.createElement('li');
+          li.textContent = c.name;
+          list.appendChild(li);
+        });
+      };
+    }
+
+    function generateInvoice() {
+      document.getElementById('invoiceOutput').textContent = 'Invoice #123
+Customer: XYZ
+Total: $100
+Status: Paid';
+    }
+
+    function unlockAdmin() {
+      const pin = document.getElementById('adminPin').value;
+      if (pin === new Date().toLocaleDateString("en-GB").replace(/\//g, '')) {
+        document.getElementById('adminPanel').style.display = 'block';
+      } else {
+        alert("Wrong PIN!");
+      }
+    }
+  </script>
+</body>
+</html>

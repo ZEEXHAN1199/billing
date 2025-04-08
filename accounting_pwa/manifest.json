@@ -1,0 +1,13 @@
+{
+  "name": "Offline Accounting App",
+  "short_name": "Accounting",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#333333",
+  "icons": [{
+    "src": "https://via.placeholder.com/192x192.png?text=App",
+    "sizes": "192x192",
+    "type": "image/png"
+  }]
+}
